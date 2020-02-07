@@ -106,7 +106,7 @@
                         {% for t in transactions %}
                         <tr>
                           <td>
-                            {{t.date}}
+                            {{t.date|date:"d/m/Y"}}
                           </td>
                           <td>
                             {{t.vendor.name}}
