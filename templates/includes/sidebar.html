@@ -1,0 +1,42 @@
+{% load static %}
+<div class="sidebar" data-color="purple" data-background-color="black"
+    data-image="{% static 'assets/img/sidebar-1.jpg' %}">
+    <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+    <div class="logo">
+        <div class="simple-text logo-normal">
+            Odisha Enterprises
+        </div>
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <li class="nav-item {% if active_tab == 'ledger' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'ledger' %}">
+                    <i class="material-icons">history</i>
+                    <p>Ledger</p>
+                </a>
+            </li>
+            <li class="nav-item {% if active_tab == 'index' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'index' %}">
+                    <i class="material-icons">dashboard</i>
+                    <p>Sale/Payment</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">
+                    <i class="material-icons">group</i>
+                    <p>Admin</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="material-icons">logout</i>
+                    <p>Logout</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
