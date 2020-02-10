@@ -4,7 +4,9 @@ class Vendor(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=100, null=True, blank=True)
     contact = models.BigIntegerField(null=True, blank=True)
-    balance = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    ajantaBalance = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    cplBalance = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    orientBalance = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name
@@ -16,6 +18,7 @@ class Transaction(models.Model):
     credit = models.FloatField(default=0.00)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, null=True)
     comment = models.CharField(null=True, blank=True, max_length=100)
+    brand = models.CharField(null=True, blank=True, max_length=100)
     balance = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 
     def __str__(self):

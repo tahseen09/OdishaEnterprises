@@ -11,23 +11,46 @@ def index(request):
     if request.method == "POST":
         vendor = Vendor.objects.get(pk=request.POST.get("vendor"))
         category = request.POST.get("category")
+        brand = request.POST.get("brand")
         date = request.POST.get("date")
         amount = Decimal(request.POST.get("amount"))
         comment = request.POST.get("comment")
 
         t = Transaction(vendor=vendor, date=date, comment=comment)
-
-        if category=="sale":
-            vendor.balance = vendor.balance+amount
-            t.debit = amount
         
-        if category=="payment":
-            vendor.balance = vendor.balance-amount
-            t.credit = amount
-        t.balance = vendor.balance
+        if brand=="ajanta":
+            if category=="sale":
+                vendor.ajantaBalance = vendor.ajantaBalance+amount
+                t.debit = amount
+            elif category=="payment":
+                vendor.ajantaBalance = vendor.ajantaBalance-amount
+                t.credit = amount
+            t.balance = vendor.ajantaBalance
+            t.brand = "Ajanta"
+
+        elif brand=="cpl":
+            if category=="sale":
+                vendor.cplBalance = vendor.cplBalance+amount
+                t.debit = amount
+            elif category=="payment":
+                vendor.cplBalance = vendor.cplBalance-amount
+                t.credit = amount
+            t.balance = vendor.cplBalance
+            t.brand = "CPL"
+
+        elif brand=="orient":
+            if category=="sale":
+                vendor.orientBalance = vendor.orientBalance+amount
+                t.debit = amount
+            elif category=="payment":
+                vendor.orientBalance = vendor.orientBalance-amount
+                t.credit = amount
+            t.balance = vendor.orientBalance
+            t.brand = "Orient"
+        
         t.save()
         vendor.save()
-        msg = "New Balance of "+vendor.name+": "+str(vendor.balance)
+        # msg = "New Balance of "+vendor.name+": "+str(vendor.balance)
         return redirect('index')
 
     context = {'vendors':vendors}

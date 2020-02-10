@@ -90,11 +90,14 @@
                           Vendor
                         </th>
                         <th>
+                          BRAND
+                        </th>
+                        <th>
                           SALE
                         </th>
                         <th>
                           PAYMENT
-                        </th>
+                        </th>                        
                         <th>
                           BALANCE
                         </th>
@@ -112,11 +115,22 @@
                             {{t.vendor.name}}
                           </td>
                           <td>
+                            {{t.brand}}
+                          </td>
+                          <td>
                             <font color="red">
+                            {% if t.debit > 0 %}
                               <b>₹{{t.debit}}</b></font>
+                            {% else %}
+                              <b>-</b></font>
+                            {% endif %}
                           </td>
                           <td class="text-primary">
+                          {% if t.credit > 0 %}
                             <b>₹{{t.credit}}</b>
+                          {% else %}
+                            <b> - </b>
+                          {% endif %}
                           </td>
                           <td>
                             {{t.balance}}
