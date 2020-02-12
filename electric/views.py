@@ -60,48 +60,22 @@ def index(request):
 @login_required
 def ledger(request):
     vendors = Vendor.objects.all()
+    transactions = Transaction.objects.all()
 
     if request.method == "POST":
         start_date = request.POST.get("from")
         end_date = request.POST.get("to")
-        name = request.POST.get("name")
-        vendor = Vendor.objects.get(pk=name)
+
         if start_date == '':
             start_date = None
         if end_date == '':
             end_date = None
-        if name == "None":
-            name = None
 
-        if start_date and end_date and name:
-            transactions = Transaction.objects.filter(date__gte=start_date,
-                                                      date__lte=end_date,
-                                                      vendor=vendor)
+        if start_date:
+            transactions = transactions.filter(date__gte=start_date)
+        if end_date:
+            transactions = transactions.filter(date__lte=end_date)
 
-        elif start_date and end_date:
-            transactions = Transaction.objects.filter(date__gte=start_date,
-                                                      date__lte=end_date)
-
-        elif start_date and name:
-            transactions = Transaction.objects.filter(date__gte=start_date,
-                                                      vendor=vendor)
-
-        elif end_date and name:
-            transactions = Transaction.objects.filter(date__lte=end_date,
-                                                      vendor=vendor)
-
-        elif start_date:
-            transactions = Transaction.objects.filter(date__gte=start_date)
-
-        elif end_date:
-            transactions = Transaction.objects.filter(date__lte=end_date)
-
-        elif name:
-            transactions = Transaction.objects.filter(vendor=vendor)
-
-        else:
-            return redirect('ledger')
-    
     else:
         now = datetime.now()
         transactions = Transaction.objects.filter(date=now)
@@ -111,3 +85,30 @@ def ledger(request):
 
     context = {'transactions':transactions, 'net_credit':net_credit, 'net_debit':net_debit, 'vendors':vendors}
     return render(request, 'ledger.html', context)
+
+
+def partyLedger(request, vendorID):
+    vendor = Vendor.objects.get(pk=vendorID)
+    transactions = Transaction.objects.filter(vendor=vendor)
+    if request.method=="POST":
+        start_date = request.POST.get("from")
+        end_date = request.POST.get("to")
+        brand = request.POST.get("brand")
+        if start_date:
+            transactions = transactions.filter(date__gte=start_date)
+        if end_date:
+            transactions = transactions.filter(date__lte=end_date)
+        if brand:
+            transactions = transactions.filter(brand=brand)
+
+    net_debit = round(sum(transactions.values_list('debit', flat=True)), 2)
+    net_credit = round(sum(transactions.values_list('credit', flat=True)), 2)
+
+    context = {'vendor':vendor, 'transactions':transactions, 'net_credit':net_credit, 'net_debit':net_debit}
+    return render(request, 'partyledger.html', context)
+
+
+def showBalance(request):
+    vendors = Vendor.objects.all()
+    context = {'vendors': vendors}
+    return render(request, 'showbalance.html', context)

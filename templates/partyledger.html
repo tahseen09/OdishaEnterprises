@@ -23,7 +23,7 @@
 
 <body class="">
   <div class="wrapper ">
-    {% include 'includes/sidebar.html' with active_tab='ledger' %}
+    {% include 'includes/sidebar.html'%}
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -50,7 +50,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Ledger</h4>
+                  <h4 class="card-title">{{vendor.name}}</h4>
                 </div>
                 <p>&nbsp;</p>
                 <form method="POST">
@@ -60,7 +60,21 @@
                     <input placeholder="Selected date" type="date" id="from" name="from"
                       class="form-control datepicker">
                     <label for="to">To</label>
-                    <input placeholder="Selected date" type="date" id="to" name="to" class="form-control datepicker">                    
+                    <input placeholder="Selected date" type="date" id="to" name="to" class="form-control datepicker">
+                    <label for="name">BRAND</label>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <select name="brand" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <option value="">Select Brand</option>
+                            <option value="Ajanta">Ajanta</option>
+                            <option value="CPL">CPL</option>
+                            <option value="Orient">Orient</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                     <button type="submit" class="btn btn-primary pull-left ">SEARCH</button>
                   </div>
                 </form><br>
@@ -71,9 +85,6 @@
                       <thead class=" text-primary">
                         <th>
                           DATE
-                        </th>
-                        <th>
-                          Vendor
                         </th>
                         <th>
                           BRAND
@@ -96,9 +107,6 @@
                         <tr>
                           <td>
                             {{t.date|date:"d/m/Y"}}
-                          </td>
-                          <td>
-                            <a href={% url 'partyledger' t.vendor.pk %}>{{t.vendor.name}}</a>
                           </td>
                           <td>
                             {{t.brand}}

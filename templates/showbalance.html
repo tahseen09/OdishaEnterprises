@@ -23,7 +23,7 @@
 
 <body class="">
   <div class="wrapper ">
-    {% include 'includes/sidebar.html' with active_tab='ledger' %}
+    {% include 'includes/sidebar.html' with active_tab='showbalance' %}
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -50,86 +50,45 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Ledger</h4>
+                  <h4 class="card-title">Balance</h4>
                 </div>
                 <p>&nbsp;</p>
-                <form method="POST">
-                  {% csrf_token %}
-                  <div class="col-md-3">
-                    <label for="from">From</label>
-                    <input placeholder="Selected date" type="date" id="from" name="from"
-                      class="form-control datepicker">
-                    <label for="to">To</label>
-                    <input placeholder="Selected date" type="date" id="to" name="to" class="form-control datepicker">                    
-                    <button type="submit" class="btn btn-primary pull-left ">SEARCH</button>
-                  </div>
-                </form><br>
-                <h3>&nbsp;</h3>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
                       <thead class=" text-primary">
                         <th>
-                          DATE
-                        </th>
-                        <th>
                           Vendor
                         </th>
                         <th>
-                          BRAND
+                          Ajanta
                         </th>
                         <th>
-                          SALE
+                          CPL                  
                         </th>
                         <th>
-                          PAYMENT
-                        </th>                        
-                        <th>
-                          BALANCE
-                        </th>
-                        <th>
-                          COMMENT
+                          Orient                 
                         </th>
                       </thead>
                       <tbody>
-                        {% for t in transactions %}
+                        {% for v in vendors %}
                         <tr>
                           <td>
-                            {{t.date|date:"d/m/Y"}}
+                            <a href={% url 'partyledger' v.pk %}>{{v.name}}</a>
                           </td>
                           <td>
-                            <a href={% url 'partyledger' t.vendor.pk %}>{{t.vendor.name}}</a>
+                            {{v.ajantaBalance}}
                           </td>
                           <td>
-                            {{t.brand}}
+                            {{v.cplBalance}}
                           </td>
                           <td>
-                            <font color="red">
-                            {% if t.debit > 0 %}
-                              <b>₹{{t.debit}}</b></font>
-                            {% else %}
-                              <b>-</b></font>
-                            {% endif %}
-                          </td>
-                          <td class="text-primary">
-                          {% if t.credit > 0 %}
-                            <b>₹{{t.credit}}</b>
-                          {% else %}
-                            <b> - </b>
-                          {% endif %}
-                          </td>
-                          <td>
-                            {{t.balance}}
-                          </td>
-                          <td>
-                            {{t.comment}}
+                            {{v.orientBalance}}
                           </td>
                         </tr>
                         {% endfor %}
                       </tbody>
                     </table>
-                    <h4><b>NET PAYMENT: <font color="green">{{ net_credit }}</font></b></h4><br>
-                    <h4><b>NET SALE: <font color="red">{{ net_debit }}</font></b></h4>
                   </div>
                 </div>
               </div>
