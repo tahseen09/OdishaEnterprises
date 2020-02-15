@@ -86,7 +86,7 @@ def ledger(request):
     context = {'transactions':transactions, 'net_credit':net_credit, 'net_debit':net_debit, 'vendors':vendors}
     return render(request, 'ledger.html', context)
 
-
+@login_required
 def partyLedger(request, vendorID):
     vendor = Vendor.objects.get(pk=vendorID)
     transactions = Transaction.objects.filter(vendor=vendor)
@@ -107,7 +107,7 @@ def partyLedger(request, vendorID):
     context = {'vendor':vendor, 'transactions':transactions, 'net_credit':net_credit, 'net_debit':net_debit}
     return render(request, 'partyledger.html', context)
 
-
+@login_required
 def showBalance(request):
     vendors = Vendor.objects.all()
     context = {'vendors': vendors}
